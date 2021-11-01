@@ -17,7 +17,6 @@ configure_hosts_file ()
 sudo tee /etc/hosts<<EOF
 172.16.8.10 master
 172.16.8.11 node-01
-172.16.8.12 node-02s
 EOF
 }
 
