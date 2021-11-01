@@ -10,9 +10,9 @@ Vagrant.configure("2") do |config|
   config.vm.box_version = "1.0.3"
 
   boxes = [
-    { :name => "master",  :ip => MASTER_IP,  :cpus => 2, :memory => 4096 },
-    { :name => "node-01", :ip => NODE_01_IP, :cpus => 2, :memory => 4096 },
-   #{ :name => "node-02", :ip => NODE_02_IP, :cpus => 1, :memory => 2048 },
+    { :name => "master",  :ip => MASTER_IP,  :cpus => 1, :memory => 2048 },
+    { :name => "node-01", :ip => NODE_01_IP, :cpus => 1, :memory => 2048 },
+    { :name => "node-02", :ip => NODE_02_IP, :cpus => 1, :memory => 2048 },
   ]
 
   boxes.each do |opts|
