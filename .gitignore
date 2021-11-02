@@ -1,1 +1,3 @@
 .vagrant
+.vscode
+join_command.sh
