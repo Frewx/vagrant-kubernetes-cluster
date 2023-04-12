@@ -8,7 +8,7 @@ sudo apt -y install curl apt-transport-https
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 sudo apt update
-sudo apt -y install vim git curl wget kubelet=1.20.11-00 kubeadm=1.20.11-00 kubectl=1.20.11-00
+sudo apt -y install vim git curl wget kubelet=1.24.12-00 kubeadm=1.24.12-00 kubectl=1.24.12-00
 sudo apt-mark hold kubelet kubeadm kubectl
 }
 
@@ -65,8 +65,30 @@ sudo systemctl enable docker
 sed -i 's/plugins.cri.systemd_cgroup = false/plugins.cri.systemd_cgroup = true/' /etc/containerd/config.toml
 }
 
+install_cri_dockerd () 
+{
+cd /tmp
+export VER="0.3.1"
+wget -q https://github.com/Mirantis/cri-dockerd/releases/download/v${VER}/cri-dockerd-${VER}.amd64.tgz
+tar xvf cri-dockerd-${VER}.amd64.tgz
+
+sudo mv cri-dockerd/cri-dockerd /usr/bin/
+
+wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service
+wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket
+sudo mv cri-docker.socket cri-docker.service /etc/systemd/system/
+
+sudo systemctl daemon-reload
+sudo systemctl enable cri-docker.service
+sudo systemctl enable --now cri-docker.socket
+
+cri-dockerd --version
+}
+
+
 install_required_packages
 configure_hosts_file
 disable_swap
 configure_sysctl
 install_docker_runtime
+install_cri_dockerd

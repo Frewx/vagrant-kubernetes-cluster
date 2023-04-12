@@ -6,13 +6,13 @@ pod_network_cidr=192.168.0.0/16
 initialize_master_node ()
 {
 sudo systemctl enable kubelet
-sudo kubeadm config images pull
-sudo kubeadm init --apiserver-advertise-address=$master_node --pod-network-cidr=$pod_network_cidr --ignore-preflight-errors=NumCPU
+sudo kubeadm config images pull --cri-socket /run/cri-dockerd.sock 
+sudo kubeadm init --cri-socket /run/cri-dockerd.sock --apiserver-advertise-address=$master_node --pod-network-cidr=$pod_network_cidr --ignore-preflight-errors=NumCPU
 }
 
 create_join_command ()
 {
-kubeadm token create --print-join-command | tee /vagrant/join_command.sh
+kubeadm token create --print-join-command | sed 's/--token/--cri-socket unix:\/\/\/run\/cri-dockerd.sock --token/' | tee /vagrant/join_command.sh
 chmod +x /vagrant/join_command.sh
 }
 
