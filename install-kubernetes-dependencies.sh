@@ -80,8 +80,9 @@ wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/sys
 wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket
 sudo mv cri-docker.socket cri-docker.service /etc/systemd/system/
 
-sudo sed -i -e 's/KUBELET_KUBEADM_ARGS="/KUBELET_KUBEADM_ARGS="--container-runtime=remote --container-runtime-endpoint=unix:\/\/\/run\/cri-dockerd.sock /' /var/lib/kubelet/kubeadm-flags.env
-
+sudo systemctl daemon-reload
+sudo systemctl enable cri-docker.service
+sudo systemctl enable --now cri-docker.socket
 }
 
 
