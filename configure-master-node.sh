@@ -12,7 +12,7 @@ sudo kubeadm init --cri-socket /run/cri-dockerd.sock --apiserver-advertise-addre
 
 create_join_command ()
 {
-kubeadm token create --print-join-command | tee /vagrant/join_command.sh
+kubeadm token create --print-join-command --cri-socket /run/cri-dockerd.sock | tee /vagrant/join_command.sh
 chmod +x /vagrant/join_command.sh
 }
 
